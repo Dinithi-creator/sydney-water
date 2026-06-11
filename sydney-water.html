@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sydney Water — IFS Copperleaf Renewal 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  #pw-gate {
+    position: fixed; inset: 0; z-index: 9999;
+    background: #170430;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'DM Sans', Arial, sans-serif;
+  }
+  .pw-box {
+    background: #1e0840;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 16px;
+    padding: 48px 44px;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.6);
+  }
+  .pw-logo { height: 28px; margin-bottom: 32px; }
+  .pw-title { font-family: 'DM Serif Display', Georgia, serif; font-size: 22px; color: #fff; font-weight: 400; margin-bottom: 8px; }
+  .pw-sub { font-size: 13px; color: rgba(255,255,255,0.4); margin-bottom: 32px; line-height: 1.6; }
+  .pw-input {
+    width: 100%; padding: 13px 16px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 8px;
+    color: #fff; font-size: 15px; font-family: 'DM Sans', Arial, sans-serif;
+    outline: none; margin-bottom: 14px;
+    transition: border-color 0.2s;
+    letter-spacing: 1px;
+  }
+  .pw-input:focus { border-color: rgba(132,39,226,0.7); }
+  .pw-input.shake { animation: shake 0.35s ease; border-color: #C6003D; }
+  .pw-btn {
+    width: 100%; padding: 13px;
+    background: #8427E2; color: #fff;
+    border: none; border-radius: 8px;
+    font-size: 14px; font-weight: 600; font-family: 'DM Sans', Arial, sans-serif;
+    cursor: pointer; transition: background 0.2s;
+  }
+  .pw-btn:hover { background: #6d1fc4; }
+  .pw-error { font-size: 12px; color: #ff6b8a; margin-top: 12px; min-height: 16px; }
+  .pw-confidential { margin-top: 28px; font-size: 11px; color: rgba(255,255,255,0.18); letter-spacing: 1.5px; text-transform: uppercase; }
+  @keyframes shake {
+    0%,100%{transform:translateX(0)}
+    20%{transform:translateX(-8px)}
+    40%{transform:translateX(8px)}
+    60%{transform:translateX(-6px)}
+    80%{transform:translateX(6px)}
+  }
+</style>
+<style>
+  :root {
+    --midnight: #170430;
+    --dark-purple: #360065;
+    --purple: #8427E2;
+    --lilac: #7B35C0;
+    --lilac-lt: #EDE0FF;
+    --blue: #0E7BB5;
+    --blue-lt: #E0F4FF;
+    --green: #0A8A4A;
+    --green-lt: #DFFAED;
+    --red: #C6003D;
+    --red-lt: #FFE0EC;
+    --white: #FFFFFF;
+    --off-white: #F7F8FA;
+    --border: #E2E6EC;
+    --text: #1A1A2E;
+    --text-muted: #5A6478;
+    --text-light: #8792A2;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', Arial, sans-serif; background: var(--white); color: var(--text); overflow-x: hidden; }
+
+  /* PARTNER HEADER */
+  .partner-header {
+    background: var(--midnight); padding: 14px 56px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .partner-logos { display: flex; align-items: center; }
+  .logo-cplf { height: 30px; width: auto; }
+  .logo-divider { width: 1px; height: 26px; background: rgba(255,255,255,0.2); margin: 0 20px; }
+  .logo-sw { height: 34px; width: auto; background: white; border-radius: 4px; padding: 4px 8px; }
+  .header-label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.4); font-weight: 600; }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 13px 56px;
+    background: rgba(255,255,255,0.97); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border); box-shadow: 0 1px 8px rgba(0,0,0,0.05);
+  }
+  .nav-links { display: flex; align-items: center; gap: 28px; }
+  .nav-links a { font-size: 13px; font-weight: 500; color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--purple); }
+  .nav-cta { background: var(--red); color: white; padding: 9px 20px; border-radius: 6px; text-decoration: none; font-size: 13px; font-weight: 600; transition: background 0.2s; }
+  .nav-cta:hover { background: #a80033; }
+
+  /* DEADLINE BANNER */
+  .deadline-bar {
+    background: #FFF3F7; border-bottom: 1px solid #FFD0E2;
+    padding: 12px 56px; display: flex; align-items: center; gap: 12px;
+  }
+  .blink { width: 8px; height: 8px; border-radius: 50%; background: var(--red); flex-shrink: 0; animation: blink 2s infinite; }
+  @keyframes blink { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(1.5)} }
+  .deadline-bar p { font-size: 13px; color: #7A1030; }
+  .deadline-bar strong { color: var(--red); font-weight: 700; }
+
+  /* HERO */
+  .hero {
+    display: grid; grid-template-columns: 1fr 1fr;
+    min-height: 520px; background: linear-gradient(160deg, #F4F2FA 0%, #EDE8F7 100%);
+    border-bottom: 1px solid var(--border);
+  }
+  .hero-content { padding: 72px 56px; display: flex; flex-direction: column; justify-content: center; }
+  .hero-pill { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--blue); margin-bottom: 20px; }
+  .hero-pill::before { content:''; width: 22px; height: 1.5px; background: var(--blue); display:block; }
+  h1 { font-family: 'DM Serif Display', Georgia, serif; font-size: clamp(32px, 3.8vw, 52px); line-height: 1.1; letter-spacing: -0.5px; max-width: 560px; margin-bottom: 20px; color: var(--text); }
+  h1 em { font-style: italic; color: var(--purple); }
+  .hero-sub { font-size: 16px; line-height: 1.7; font-weight: 300; color: var(--text-muted); max-width: 500px; margin-bottom: 36px; }
+  .hero-savings {
+    display: inline-flex; align-items: center; gap: 16px;
+    background: var(--green-lt); border: 1px solid #A8E8C8; border-radius: 12px; padding: 18px 24px; margin-bottom: 32px;
+  }
+  .hero-savings .big-save { font-size: 40px; font-weight: 700; letter-spacing: -1.5px; color: var(--green); line-height: 1; }
+  .hero-savings .save-label { font-size: 13px; line-height: 1.55; color: #0A5A35; max-width: 220px; }
+  .hero-savings .save-label strong { font-weight: 700; }
+  .hero-tags { display: flex; gap: 7px; flex-wrap: wrap; }
+  .tag { font-size: 11px; font-weight: 600; padding: 4px 11px; border-radius: 100px; border: 1px solid var(--border); color: var(--text-muted); background: white; }
+
+  /* HERO PHOTO */
+  .hero-photo { position: relative; overflow: hidden; min-height: 480px; }
+  .hero-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
+  .hero-photo-caption {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    background: linear-gradient(to top, rgba(23,4,48,0.82) 0%, transparent 100%);
+    padding: 40px 28px 22px;
+    font-size: 12px; color: rgba(255,255,255,0.75); font-weight: 400; letter-spacing: 0.2px;
+  }
+  .hero-photo-caption strong { color: white; font-weight: 600; }
+
+  /* SECTIONS */
+  .sec { padding: 80px 56px; }
+  .sec-alt { background: var(--off-white); }
+  .eyebrow { font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--blue); font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
+  .eyebrow::before { content:''; width: 18px; height: 1.5px; background: var(--blue); display:block; }
+  .sec-h { font-family: 'DM Serif Display', Georgia, serif; font-size: clamp(24px, 2.6vw, 36px); line-height: 1.2; letter-spacing: -0.3px; max-width: 560px; margin-bottom: 12px; color: var(--text); }
+  .sec-sub { font-size: 15px; line-height: 1.7; color: var(--text-muted); max-width: 560px; margin-bottom: 44px; font-weight: 300; }
+
+  /* RISK */
+  .risk-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .risk-card { border-radius: 10px; padding: 22px 24px; border: 1px solid #FFB8CF; background: #FFF5F8; }
+  .risk-card .r-head { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--red); font-weight: 700; margin-bottom: 8px; }
+  .risk-card h4 { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+  .risk-card p { font-size: 13px; line-height: 1.65; color: var(--text-muted); }
+  .risk-resolve { margin-top: 14px; border-radius: 10px; padding: 22px 24px; border: 1px solid #A8E8C8; background: var(--green-lt); grid-column: span 2; }
+  .risk-resolve .rr-head { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--green); font-weight: 700; margin-bottom: 8px; }
+  .risk-resolve h4 { font-size: 14px; font-weight: 600; margin-bottom: 6px; color: #0A3A25; }
+  .risk-resolve p { font-size: 13px; line-height: 1.65; color: #0A5A35; }
+
+  /* TCO TABLE */
+  .tco-table-wrap { overflow-x: auto; border-radius: 10px; border: 1px solid var(--border); }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; background: white; }
+  thead tr { border-bottom: 1px solid var(--border); background: var(--off-white); }
+  thead th { text-align: left; padding: 12px 16px; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-light); font-weight: 700; }
+  thead th:not(:first-child) { text-align: right; }
+  tbody tr { border-bottom: 1px solid var(--border); transition: background 0.12s; }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: #F9FAFB; }
+  tbody td { padding: 14px 16px; color: var(--text-muted); }
+  tbody td:not(:first-child) { text-align: right; font-variant-numeric: tabular-nums; }
+  tbody td.sn { font-weight: 500; color: var(--text); }
+  tbody tr.hl { background: #F0FBF5; }
+  tbody tr.hl td { color: var(--text); }
+  tbody tr.hl td:not(:first-child) { color: var(--green); font-weight: 600; }
+  tbody tr.hl .sn::after { content: ' — Recommended'; font-size: 10px; letter-spacing: 0.5px; color: var(--green); font-weight: 700; text-transform: uppercase; margin-left: 8px; }
+  tbody tr.rr td { color: #CCCCDD; }
+  tbody tr.rr td:not(:first-child) { color: #E0909F; }
+  tbody tr.rr .sn { color: #CCCCDD; }
+  .tco-fn { font-size: 12px; color: var(--text-light); margin-top: 12px; line-height: 1.6; }
+  .tco-fn strong { color: var(--text-muted); }
+
+  /* WHAT'S INCLUDED */
+  .wyg-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .wyg-card { border-radius: 10px; padding: 22px 20px; border: 1px solid var(--border); background: white; transition: border-color 0.2s, box-shadow 0.2s; }
+  .wyg-card:hover { border-color: #C4B3E8; box-shadow: 0 2px 12px rgba(123,53,192,0.07); }
+  .wyg-card .w-icon { width: 34px; height: 34px; border-radius: 8px; margin-bottom: 11px; display: flex; align-items: center; justify-content: center; font-size: 15px; background: var(--lilac-lt); }
+  .wyg-card h4 { font-size: 13px; font-weight: 600; margin-bottom: 5px; }
+  .wyg-card p { font-size: 13px; line-height: 1.6; color: var(--text-muted); }
+
+  /* OPTIONAL ADDS */
+  .adds-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .add-card { border-radius: 10px; padding: 22px 20px; border: 1px solid var(--border); background: white; }
+  .add-card .badge { display: inline-block; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 700; padding: 3px 9px; border-radius: 4px; margin-bottom: 11px; }
+  .add-card.a1 .badge { background: var(--lilac-lt); color: var(--lilac); }
+  .add-card.a2 .badge { background: var(--blue-lt); color: var(--blue); }
+  .add-card.a3 .badge { background: var(--green-lt); color: var(--green); }
+  .add-card h4 { font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+  .add-card p { font-size: 13px; line-height: 1.6; color: var(--text-muted); margin-bottom: 11px; }
+  .add-card .price-line { font-size: 12px; color: var(--text-light); }
+  .add-card .price-line span { color: var(--purple); font-weight: 700; }
+
+  /* TEAM PHOTO BANNER */
+  .team-photo-banner { position: relative; overflow: hidden; height: 340px; }
+  .team-photo-banner img { width: 100%; height: 100%; object-fit: cover; object-position: center 30%; display: block; }
+  .team-photo-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to right, rgba(23,4,48,0.72) 0%, transparent 55%);
+    display: flex; align-items: center; padding: 0 56px;
+  }
+  .team-photo-text h3 { font-family: 'DM Serif Display', Georgia, serif; font-size: 28px; color: white; margin-bottom: 8px; font-weight: 400; line-height: 1.2; }
+  .team-photo-text p { font-size: 14px; color: rgba(255,255,255,0.7); font-weight: 300; max-width: 340px; line-height: 1.6; }
+
+  /* TEAM */
+  .team-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
+  .team-intro { position: sticky; top: 80px; }
+  .team-intro p { font-size: 15px; line-height: 1.75; color: var(--text-muted); font-weight: 300; margin-bottom: 16px; }
+  .team-cards { display: flex; flex-direction: column; gap: 14px; }
+  .team-card { border-radius: 12px; padding: 24px 26px; background: white; border: 1px solid var(--border); display: flex; gap: 18px; align-items: flex-start; transition: border-color 0.2s, box-shadow 0.2s; }
+  .team-card:hover { border-color: #C4B3E8; box-shadow: 0 3px 14px rgba(123,53,192,0.07); }
+  .avatar { width: 52px; height: 52px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 700; color: white; }
+  .avatar.av1 { background: linear-gradient(135deg, var(--midnight), var(--purple)); }
+  .avatar.av2 { background: linear-gradient(135deg, #065A82, #0E7BB5); }
+  .avatar.av3 { background: linear-gradient(135deg, var(--dark-purple), var(--lilac)); }
+  .t-name { font-size: 15px; font-weight: 600; margin-bottom: 2px; }
+  .t-role { font-size: 11px; color: var(--purple); font-weight: 600; letter-spacing: 0.3px; margin-bottom: 9px; }
+  .t-bio { font-size: 13px; line-height: 1.65; color: var(--text-muted); font-weight: 300; margin-bottom: 10px; }
+  .contact-link { font-size: 13px; color: var(--blue); text-decoration: none; font-weight: 500; display: inline-flex; align-items: center; gap: 5px; border-bottom: 1px solid rgba(14,123,181,0.25); padding-bottom: 1px; transition: border-color 0.2s; }
+  .contact-link:hover { border-color: var(--blue); }
+
+  /* GROUP PHOTO */
+  .group-photo-wrap { margin-top: 56px; border-radius: 14px; overflow: hidden; position: relative; }
+  .group-photo-wrap img { width: 100%; display: block; height: auto; }
+  .group-caption { background: var(--off-white); border: 1px solid var(--border); border-top: none; border-radius: 0 0 14px 14px; padding: 14px 20px; font-size: 12px; color: var(--text-light); }
+  .group-caption strong { color: var(--text-muted); }
+
+  /* NEXT STEPS */
+  .steps { display: flex; flex-direction: column; max-width: 680px; }
+  .step { display: flex; gap: 22px; align-items: flex-start; }
+  .step-connector { display: flex; flex-direction: column; align-items: center; }
+  .step-num { width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; }
+  .step-num.s1 { background: var(--red); color: white; }
+  .step-num.s2 { background: var(--purple); color: white; }
+  .step-num.s3 { background: var(--blue-lt); color: var(--blue); border: 1.5px solid rgba(14,123,181,0.3); }
+  .step-num.s4 { background: var(--green-lt); color: var(--green); border: 1.5px solid rgba(10,138,74,0.3); }
+  .step-line { width: 1.5px; flex: 1; min-height: 28px; background: var(--border); margin: 3px 0; }
+  .step:last-child .step-line { display: none; }
+  .step-content { padding-bottom: 32px; flex: 1; }
+  .step-content h4 { font-size: 14px; font-weight: 600; margin-bottom: 4px; margin-top: 5px; }
+  .step-content p { font-size: 13px; line-height: 1.65; color: var(--text-muted); }
+
+  /* CTA */
+  .cta-sec { padding: 90px 56px; text-align: center; background: var(--midnight); }
+  .cta-sec h2 { font-family: 'DM Serif Display', Georgia, serif; font-size: clamp(24px, 3vw, 40px); font-weight: 400; letter-spacing: -0.3px; margin-bottom: 12px; max-width: 520px; margin-left: auto; margin-right: auto; line-height: 1.2; color: white; }
+  .cta-sec p { font-size: 15px; color: rgba(255,255,255,0.52); max-width: 440px; margin: 0 auto 34px; font-weight: 300; line-height: 1.65; }
+  .cta-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .btn-primary { background: var(--red); color: white; padding: 13px 28px; border-radius: 7px; font-size: 14px; font-weight: 600; text-decoration: none; transition: background 0.2s, transform 0.15s; display: inline-flex; align-items: center; gap: 7px; }
+  .btn-primary:hover { background: #a80033; transform: translateY(-1px); }
+  .btn-ghost { background: transparent; color: rgba(255,255,255,0.65); padding: 13px 28px; border-radius: 7px; font-size: 14px; font-weight: 500; text-decoration: none; border: 1px solid rgba(255,255,255,0.18); transition: background 0.2s; display: inline-flex; align-items: center; gap: 7px; }
+  .btn-ghost:hover { background: rgba(255,255,255,0.06); }
+
+  /* VALUE STATS */
+  .value-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 56px; }
+  .vstat { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 28px 24px; text-align: center; }
+  .vstat .vs-num { font-size: 36px; font-weight: 700; letter-spacing: -1.5px; color: var(--purple); line-height: 1; margin-bottom: 8px; }
+  .vstat .vs-label { font-size: 13px; line-height: 1.55; color: var(--text-muted); font-weight: 400; }
+
+  /* VALUE POWER MESSAGES */
+  .value-msgs { display: flex; flex-direction: column; gap: 0; }
+  .vmsg { display: grid; grid-template-columns: 1fr 2fr; gap: 40px; padding: 32px 0; border-bottom: 1px solid var(--border); align-items: start; }
+  .vmsg:last-child { border-bottom: none; }
+  .vmsg-head { font-size: 17px; font-weight: 600; line-height: 1.3; color: var(--text); letter-spacing: -0.2px; }
+  .vmsg-head em { font-style: normal; color: var(--purple); }
+  .vmsg-body { font-size: 14px; line-height: 1.75; color: var(--text-muted); font-weight: 300; }
+
+  @media(max-width: 900px) {
+    .value-stats { grid-template-columns: 1fr 1fr; }
+    .vmsg { grid-template-columns: 1fr; gap: 8px; }
+  }
+  footer { padding: 26px 56px; border-top: 1px solid rgba(255,255,255,0.07); background: var(--midnight); display: flex; justify-content: space-between; align-items: center; font-size: 11px; color: rgba(255,255,255,0.2); }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp { from {opacity:0;transform:translateY(16px)} to {opacity:1;transform:translateY(0)} }
+  .hero-content > * { animation: fadeUp 0.5s ease both; }
+  .hero-pill { animation-delay: 0s; }
+  h1 { animation-delay: 0.07s; }
+  .hero-sub { animation-delay: 0.13s; }
+  .hero-savings { animation-delay: 0.19s; }
+  .hero-tags { animation-delay: 0.25s; }
+
+  /* RESPONSIVE */
+  @media(max-width: 900px) {
+    .partner-header, nav, .deadline-bar, .hero-content, .sec, .cta-sec, footer { padding-left: 20px; padding-right: 20px; }
+    .hero { grid-template-columns: 1fr; }
+    .hero-photo { min-height: 280px; }
+    .risk-grid, .wyg-grid, .adds-grid, .team-layout { grid-template-columns: 1fr; }
+    .risk-resolve { grid-column: span 1; }
+    .team-intro { position: static; }
+    .team-photo-overlay { padding: 0 24px; }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- PASSWORD GATE -->
+<div id="pw-gate">
+  <div class="pw-box">
+    <img class="pw-logo" src="https://147080089.fs1.hubspotusercontent-eu1.net/hubfs/147080089/IFS%20Copperleaf_Logo_Negative_RGB.png" alt="IFS Copperleaf">
+    <div class="pw-title">This page is protected</div>
+    <div class="pw-sub">Enter the access code to view the Sydney Water renewal proposal.</div>
+    <input class="pw-input" type="password" id="pw-input" placeholder="Access code" autocomplete="off">
+    <button class="pw-btn" onclick="checkPassword()">Access proposal &rarr;</button>
+    <div class="pw-error" id="pw-error"></div>
+    <div class="pw-confidential">Confidential — IFS Copperleaf</div>
+  </div>
+</div>
+<script>
+  document.body.style.overflow = 'hidden';
+  document.getElementById('pw-input').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') checkPassword();
+  });
+  function checkPassword() {
+    var input = document.getElementById('pw-input');
+    var error = document.getElementById('pw-error');
+    if (input.value === 'IFSCPLF0626SW@') {
+      document.getElementById('pw-gate').style.display = 'none';
+      document.body.style.overflow = '';
+    } else {
+      error.textContent = 'Incorrect access code. Please try again.';
+      input.classList.remove('shake');
+      void input.offsetWidth;
+      input.classList.add('shake');
+      input.value = '';
+      input.focus();
+    }
+  }
+</script>
+
+<!-- PARTNER HEADER -->
+<div class="partner-header">
+  <div class="partner-logos">
+    <img class="logo-cplf" src="https://147080089.fs1.hubspotusercontent-eu1.net/hubfs/147080089/IFS%20Copperleaf_Logo_Negative_RGB.png" alt="IFS Copperleaf">
+    <div class="logo-divider"></div>
+    <img class="logo-sw" src="https://147080089.fs1.hubspotusercontent-eu1.net/hubfs/147080089/APJMEA/ABM/sw-logo.gif" alt="Sydney Water">
+  </div>
+  <span class="header-label">Renewal 2026 — Confidential</span>
+</div>
+
+<!-- STICKY NAV -->
+<nav>
+  <div class="nav-links">
+    <a href="#risk">Why act now</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#value">Value delivered</a>
+    <a href="#team">Your team</a>
+    <a href="#next">Next steps</a>
+  </div>
+  <a href="#contact" class="nav-cta">Sign before July 2026 &rarr;</a>
+</nav>
+
+<!-- DEADLINE BANNER -->
+<div class="deadline-bar">
+  <div class="blink"></div>
+  <p><strong>Pricing changes in July 2026.</strong> Renewing before end of June locks in 2026 rates and saves over $3.3M compared to signing after the deadline.</p>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-content">
+    <div class="hero-pill">Sydney Water — IFS Copperleaf Renewal 2026</div>
+    <h1>Secure what you have built. <em>Save $3.3M</em> over the next five years.</h1>
+    <p class="hero-sub">Sydney Water's IFS Copperleaf contract expired in April 2026. A 5-year renewal signed before end of June locks in 2026 pricing, removes compliance exposure, and includes a built-in option to convert to SaaS at any point at no extra cost.</p>
+    <div class="hero-savings">
+      <div class="big-save">$3.3M+</div>
+      <div class="save-label"><strong>Saving vs. market rate</strong> over 5 years if renewal is signed before July 2026. Market rate for Sydney Water's full portfolio is $1.32M per year.</div>
+    </div>
+    <div class="hero-tags">
+      <span class="tag">Existing customer</span>
+      <span class="tag">Contract renewal</span>
+      <span class="tag">5-year term</span>
+      <span class="tag">SaaS conversion included</span>
+      <span class="tag">Deadline: end of June 2026</span>
+    </div>
+  </div>
+  <div class="hero-photo">
+      <img src="https://147080089.fs1.hubspotusercontent-eu1.net/hubfs/147080089/APJMEA/ABM/IMG_6130.jpeg" alt="Full joint team — IFS Copperleaf and Sydney Water go-live celebration, February 2026">
+      <div class="hero-photo-caption"><strong>Go-live celebration — Sydney Water, February 2026.</strong> The IFS Copperleaf team presenting the go-live trophy at Sydney Water HQ.</div>
+  </div>
+</div>
+
+<!-- COMPLIANCE RISK -->
+<section class="sec" id="risk">
+  <div class="eyebrow">Compliance &amp; commercial risk</div>
+  <h2 class="sec-h">Why this cannot wait</h2>
+  <p class="sec-sub">The initial contract term expired on 30 April 2026. Sydney Water is currently using IFS Copperleaf without a valid licence. Three distinct risks are resolved the moment a renewal is signed.</p>
+  <div class="risk-grid">
+    <div class="risk-card">
+      <div class="r-head">Legal exposure</div>
+      <h4>Software in use without a valid contract</h4>
+      <p>Continued use without a valid agreement creates direct legal and compliance exposure under NSW ICTA governance requirements.</p>
+    </div>
+    <div class="risk-card">
+      <div class="r-head">Pricing exposure</div>
+      <h4>Pricing resets to market rate in July 2026</h4>
+      <p>A COO exemption carries 2026 pricing into July only. After that, market rate applies: $1.32M per year vs the current $484K annual fee.</p>
+    </div>
+    <div class="risk-card">
+      <div class="r-head">Commercial context</div>
+      <h4>Lowest 10% of customers on pricing</h4>
+      <p>An internal Copperleaf audit found Sydney Water's contract is in the lowest 10% of all customers by pricing, with no CPI applied since 2023.</p>
+    </div>
+    <div class="risk-card">
+      <div class="r-head">Product lifecycle</div>
+      <h4>Active development shifting to Cloud AI (SaaS)</h4>
+      <p>Post-25R2, active feature development is on the Cloud AI platform. Remaining on Windows Server limits access to future capabilities including Foresight AI.</p>
+    </div>
+    <div class="risk-resolve">
+      <div class="rr-head">How this is resolved</div>
+      <h4>A Variation Memo amendment closes all of this in one step</h4>
+      <p>The renewal is a simple amendment to the existing contract, not a new agreement. Two years of flat invoicing at $484K are included in all scenarios, with a built-in SaaS conversion provision at the same price — exercisable at any point during the term with no re-negotiation.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TCO TABLE -->
+<section class="sec sec-alt" id="pricing">
+  <div class="eyebrow">Best and final offer</div>
+  <h2 class="sec-h">Five-year total cost of ownership</h2>
+  <p class="sec-sub">All scenarios include two years of flat invoicing, a SaaS conversion provision, updated overseas support access, and a revised liability cap. Pricing changes in July 2026.</p>
+  <div class="tco-table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Scenario</th><th>May 26</th><th>May 27</th><th>May 28</th><th>May 29</th><th>May 30</th><th>5-yr Total (AUD)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="hl">
+          <td class="sn">Scenario 1 — SMA 5yr</td>
+          <td>$484K</td><td>$484K</td><td>$1,150K</td><td>$1,265K</td><td>$1,392K</td><td>$4,775K</td>
+        </tr>
+        <tr>
+          <td class="sn">Scenario 4 — SMA + Copperleaf Asset*</td>
+          <td>$484K</td><td>$484K</td><td>$1,300K</td><td>$1,430K</td><td>$1,573K</td><td>$5,271K</td>
+        </tr>
+        <tr class="rr">
+          <td class="sn">Scenario 5 — SMA from July (post-deadline)</td>
+          <td>$484K</td><td>$484K</td><td>$1,573K</td><td>$1,730K</td><td>$1,903K</td><td>$6,175K</td>
+        </tr>
+        <tr class="rr">
+          <td class="sn">Scenario 6 — SMA + Asset from July</td>
+          <td>$484K</td><td>$484K</td><td>$1,865K</td><td>$2,052K</td><td>$2,257K</td><td>$7,141K</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="tco-fn">* Scenario 1 is our recommended option. Scenario 4 adds Copperleaf Asset at no licence cost for the first two years, giving Sydney Water full access to SMA + Asset capability while deferring incremental cost. All figures in AUD thousands. Scenarios 5–6 apply if execution occurs in July 2026 with COO exemption applied to July only.</p>
+</section>
+
+<!-- WHAT'S INCLUDED -->
+<section class="sec">
+
+<!-- VALUE DELIVERED -->
+<section class="sec sec-alt" id="value">
+  <div class="eyebrow">Value delivered</div>
+  <h2 class="sec-h">What Sydney Water has already built — and what this renewal protects</h2>
+  <p class="sec-sub">The platform went live in February 2026. Renewing protects that investment and the capability Sydney Water's teams now depend on every day.</p>
+
+  <div class="value-stats">
+    <div class="vstat">
+      <div class="vs-num">$2.7B</div>
+      <div class="vs-label">Annual CAPEX now planned and optimised through Copperleaf</div>
+    </div>
+    <div class="vstat">
+      <div class="vs-num">~$80M</div>
+      <div class="vs-label">Equivalent value from 3.25% portfolio efficiency improvement on a $2.5B portfolio</div>
+    </div>
+    <div class="vstat">
+      <div class="vs-num">9+</div>
+      <div class="vs-label">Legacy planning systems retired — ART, ARN, ARL, BBT, CIP, PRR, POR, TRAP, Program Builder</div>
+    </div>
+    <div class="vstat">
+      <div class="vs-num">Days</div>
+      <div class="vs-label">Planning cycles that took months in spreadsheets now complete in weeks or days</div>
+    </div>
+  </div>
+
+  <div class="value-msgs">
+    <div class="vmsg">
+      <div class="vmsg-head"><em>Single source of truth</em> for capital planning</div>
+      <div class="vmsg-body">Sydney Water replaced a fragmented landscape of disconnected tools with one integrated platform. Administrative overhead is down. Data integrity, governance, and cross-portfolio alignment are up — and the planning team has a defensible, single view of investment priorities.</div>
+    </div>
+    <div class="vmsg">
+      <div class="vmsg-head"><em>Defensible, regulator-aligned</em> investment decisions</div>
+      <div class="vmsg-body">A unified, auditable value framework — covering risk, cost, performance, and growth — means every investment is evaluated the same way. Decisions are transparent, evidence-based, and aligned to IPART expectations rather than siloed or subjective.</div>
+    </div>
+    <div class="vmsg">
+      <div class="vmsg-head"><em>Optimised capital allocation</em> at scale</div>
+      <div class="vmsg-body">Advanced portfolio optimisation across ~$2.7B in annual CAPEX maximises value, reduces over and under-investment in specific portfolios, and ensures Sydney Water selects the highest-value combination of investments — not just the most visible ones.</div>
+    </div>
+    <div class="vmsg">
+      <div class="vmsg-head"><em>Planning speed and agility</em> transformed</div>
+      <div class="vmsg-body">Cycles that previously took months of manual prioritisation in spreadsheets now run in weeks or days. When constraints change, portfolios can be re-planned in hours — not the next budget cycle.</div>
+    </div>
+    <div class="vmsg">
+      <div class="vmsg-head"><em>Strong governance, auditability,</em> and control</div>
+      <div class="vmsg-body">Role-based controls prevent investment owners from gaming the optimisation. Full decision traceability, dependency tracking, and audit logging provide confidence across submissions, approvals, and downstream reporting — and protect the integrity of the data leadership relies on.</div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT'S INCLUDED -->
+<section class="sec">
+  <div class="eyebrow">What the renewal includes</div>
+  <h2 class="sec-h">Everything in the current agreement, and more</h2>
+  <p class="sec-sub">The Variation Memo updates several commercial items from the original contract and adds flexibility for where Sydney Water takes the platform next.</p>
+  <div class="wyg-grid">
+    <div class="wyg-card"><div class="w-icon">🔒</div><h4>2 years of flat invoicing</h4><p>Years 1 and 2 at the current $484K rate — a known baseline through to April 2028.</p></div>
+    <div class="wyg-card"><div class="w-icon">☁️</div><h4>SaaS conversion at the same price</h4><p>Migrate to Cloud AI at any point during the term, at no additional cost, with no re-negotiation.</p></div>
+    <div class="wyg-card"><div class="w-icon">🌏</div><h4>Overseas support access</h4><p>Wording updated to enable overseas support, aligning to the IFS Australia standard contract.</p></div>
+    <div class="wyg-card"><div class="w-icon">⚖️</div><h4>Updated liability cap</h4><p>Item 53 reduced to 125% of annual contract value, aligned to current IFS standard terms.</p></div>
+    <div class="wyg-card"><div class="w-icon">🚫</div><h4>Termination for convenience removed</h4><p>Removed from the agreement, providing greater contract certainty for both parties.</p></div>
+    <div class="wyg-card"><div class="w-icon">📈</div><h4>Price certainty through 2031</h4><p>Known pricing through to 2031 enables accurate multi-year budget planning aligned to regulatory cycles.</p></div>
+  </div>
+</section>
+
+<!-- OPTIONAL ADDS -->
+<section class="sec sec-alt">
+  <div class="eyebrow">Optional additions</div>
+  <h2 class="sec-h">Extend capability when you are ready</h2>
+  <p class="sec-sub">Three additions available at significant discounts to list, each scopeable independently of the core renewal.</p>
+  <div class="adds-grid">
+    <div class="add-card a1"><div class="badge">Asset strategy</div><h4>Copperleaf Asset</h4><p>Value-based asset strategies grounded in quantified risk, connected directly to the capital plan. No licence cost for the first two years in Scenario 4.</p><div class="price-line">List: $585K/yr &nbsp;|&nbsp; Offer: <span>$292K/yr (50% off)</span></div></div>
+    <div class="add-card a2"><div class="badge">AI &amp; automation</div><h4>Foresight AI</h4><p>Reduces manual processes and accelerates planning workflows while keeping decisions traceable, governed, and auditable. SaaS contract only.</p><div class="price-line">List: $330K/yr &nbsp;|&nbsp; Offer: <span>$170K/yr (50% off)</span></div></div>
+    <div class="add-card a3"><div class="badge">Value realisation</div><h4>Accelerate Services</h4><p>Deepens value from the existing deployment through improved adoption, maturity, and outcomes from what is already live.</p><div class="price-line">Scoped individually</div></div>
+  </div>
+</section>
+
+<!-- TEAM PHOTO BANNER -->
+<div class="team-photo-banner">
+  <img src="https://147080089.fs1.hubspotusercontent-eu1.net/hubfs/147080089/APJMEA/ABM/2026-02-16%20Copperleaf%20End%20of%20Project%20Celebration_1.jpeg" alt="IFS Copperleaf and Sydney Water teams at go-live celebration">
+  <div class="team-photo-overlay">
+    <div class="team-photo-text">
+      <h3>The joint team that delivered this.</h3>
+      <p>IFS Copperleaf and Sydney Water teams at the go-live celebration, February 2026.</p>
+    </div>
+  </div>
+</div>
+
+<!-- TEAM -->
+<section class="sec" id="team">
+  <div class="team-layout">
+    <div class="team-intro">
+      <div class="eyebrow">Your IFS Copperleaf team</div>
+      <h2 class="sec-h">The people who know this deployment inside and out</h2>
+      <p>The team supporting this renewal has been embedded in Sydney Water's Copperleaf journey since the original implementation. They understand the platform, the data, and the business context.</p>
+      <p>Brad and Alex are available to meet directly with Sydney Water's procurement and executive teams to discuss renewal terms and the path forward.</p>
+    </div>
+    <div class="team-cards">
+      <div class="team-card">
+        <div class="avatar av1">BH</div>
+        <div>
+          <div class="t-name">Brad Hocking</div>
+          <div class="t-role">Director, Consulting Delivery — IFS Copperleaf</div>
+          <p class="t-bio">Brad leads consulting delivery across ANZ and has been the senior delivery lead accountable for Sydney Water since the original implementation. He oversees platform delivery, SaaS transition planning, and executive stakeholder engagement.</p>
+          <a href="mailto:brad.hocking@ifs.com" class="contact-link">brad.hocking@ifs.com &rarr;</a>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="avatar av2">AG</div>
+        <div>
+          <div class="t-name">Alex Gruber</div>
+          <div class="t-role">Senior Lead Functional Consultant &amp; CSM, Sydney Water — IFS Copperleaf</div>
+          <p class="t-bio">Alex is Sydney Water's dedicated Copperleaf functional lead and Customer Success Manager. He has deep familiarity with Sydney Water's deployed modules, value framework configuration, and the outcomes the platform is delivering day to day.</p>
+          <a href="mailto:alex.gruber@ifs.com" class="contact-link">alex.gruber@ifs.com &rarr;</a>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="avatar av3">AB</div>
+        <div>
+          <div class="t-name">Alexander Bland</div>
+          <div class="t-role">Account Executive, ANZ — IFS Copperleaf</div>
+          <p class="t-bio">Alexander is the ANZ Account Executive responsible for the Sydney Water renewal. He is the primary commercial contact for renewal terms, pricing scenarios, and contract execution.</p>
+          <a href="mailto:alexander.bland@ifs.com" class="contact-link">alexander.bland@ifs.com &rarr;</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- NEXT STEPS -->
+<section class="sec sec-alt" id="next">
+  <div class="eyebrow">Next steps</div>
+  <h2 class="sec-h" style="margin-bottom:40px;">How to move this forward</h2>
+  <div class="steps">
+    <div class="step">
+      <div class="step-connector"><div class="step-num s1">1</div><div class="step-line"></div></div>
+      <div class="step-content">
+        <h4>Confirm the preferred scenario</h4>
+        <p>Scenario 1 (SMA 5yr) is our recommended option. Scenario 4 adds Copperleaf Asset at no licence cost for two years if Sydney Water wishes to extend capability. Share the preferred option with Alexander Bland and the Variation Memo will be prepared for review.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-connector"><div class="step-num s2">2</div><div class="step-line"></div></div>
+      <div class="step-content">
+        <h4>Review and redline the Variation Memo</h4>
+        <p>The renewal is a simple amendment, not a new contract. Key items for legal review include the updated liability cap (125% ACV) and removal of termination for convenience.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-connector"><div class="step-num s3">3</div><div class="step-line"></div></div>
+      <div class="step-content">
+        <h4>Execute before end of June 2026</h4>
+        <p>Execution before end of June locks in 2026 pricing for the full 5-year term. The COO exemption carries current pricing into July for organisations in active negotiation, but the best and final offer expires at end of month.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-connector"><div class="step-num s4">4</div><div class="step-line"></div></div>
+      <div class="step-content">
+        <h4>Plan the SaaS migration on your own timeline</h4>
+        <p>Once the renewal is in place, Brad and Alex will scope the Cloud AI migration pathway whenever Sydney Water is ready — at no additional cost, with no commercial re-engagement required.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-sec" id="contact">
+  <h2>The decision needs to happen before July. Let's close this.</h2>
+  <p>Reach out to Alexander Bland or Brad Hocking directly to move the Variation Memo forward.</p>
+  <div class="cta-btns">
+    <a href="mailto:alexander.bland@ifs.com" class="btn-primary">Contact Alexander Bland &rarr;</a>
+    <a href="mailto:brad.hocking@ifs.com" class="btn-ghost">Contact Brad Hocking</a>
+  </div>
+</section>
+
+<footer>
+  <span>© 2026 IFS Copperleaf. Confidential — prepared for Sydney Water.</span>
+  <span>ifs.com/copperleaf</span>
+</footer>
+
+</body>
+</html>
